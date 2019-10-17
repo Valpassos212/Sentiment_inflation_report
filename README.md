@@ -1,6 +1,6 @@
 # Sentiment_inflation_report
-This code is used to produce simple word frequency and sentiment plots of Central Bank of Brazil quarterly inflation report. 
-I used the English version of the reports and you will see that this was not published for sometime in the recente past, therefore, the sentiment series stop from 2011-09 to  2016-06.
+This code is produces simple word frequency and sentiment plots taking the inflation report published by the Central Bank of Brazil  on a quarterly basis. 
+I used the English version of the reports. You will see that this version was not published for sometime in the recent past, therefore, the sentiment serie jumps from 2011-06 to  2016-09.
 
 
 
