@@ -77,15 +77,17 @@ copom_links<- c("https://www.bcb.gov.br/content/publications/inflationreport/200
                 
                 "https://www.bcb.gov.br/content/publications/inflationreport/201903/INFREP201903-ri201903I.pdf",
                 
-                "https://www.bcb.gov.br/content/publications/inflationreport/201906/ri201906I.pdf")
+                "https://www.bcb.gov.br/content/publications/inflationreport/201906/ri201906I.pdf",
+                
+                "https://www.bcb.gov.br/content/publications/inflationreport/201909/ri201909i.pdf")
 
 
-# as the  english report was discontinued durring some time, I create de dates separte
+# date stamps
 
 dates1<- as.Date(seq.Date(from = as.Date("2007/3/1"), to = as.Date("2011/6/1"), by = "quarter"))
 
 
-dates2<- as.Date(seq.Date(from = as.Date("2016/9/1"), to = as.Date("2019/6/1"), by = "quarter"))
+dates2<- as.Date(seq.Date(from = as.Date("2016/9/1"), to = as.Date("2019/9/1"), by = "quarter"))
 
 dates<- c(as.character(dates1),as.character(dates2))
 
@@ -131,7 +133,7 @@ total_words<- copom_words %>%
   
   summarize(total = sum(n))
 
-#pllting word counts
+#spllting word counts
 
 ggplot(data = total_words, aes( x = dates, y = total)) +
   
@@ -143,7 +145,8 @@ ggplot(data = total_words, aes( x = dates, y = total)) +
   
   theme_ridges( font_family = "Roboto") +
   
-  labs(x = "Year", y = "Number of Words", title = "Number of Words BACEN Inflation Report")
+  labs(x = "Year", y = "Number of Words", title = "Number of Words BACEN Inflation Report") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
   
   
 
@@ -270,7 +273,7 @@ copom_text_v2 %>%
   labs(x = "", y = "tf-idf", title = "Words tf-idf")
   
 
-# sentiment accross reports
+# sentiment accross CBB reports
 
 
 copom_sentiment<- 
@@ -281,7 +284,7 @@ copom_sentiment<-
   
   inner_join(get_sentiments("bing")) %>%
   
-  count(report, index = line %% 100, sentiment)%>%
+  count(report, index = line %/%240, sentiment)%>%
   
   spread(sentiment,n, fill = 0) %>%
   
@@ -291,16 +294,16 @@ ggplot(copom_sentiment, aes(index, sentiment, fill = sentiment >0)) +
   
   geom_col(show.legend = FALSE) +
   
-  scale_fill_manual(values = c("orange","blue4")) +
+  scale_fill_manual(values = c("red","blue4")) +
   
   facet_wrap(~report, ncol = 5, scales = "free_x") +
   
   theme_ridges(font_family = "Roboto") +
   
-  labs(x= "index", y = "Sentiment", title  = "Sentiment Accross Reports")
+  labs(x= "index", y = "Sentiment", title  = "Sentiment Accross CBB Reports")
   
 
-#sentiment on each report
+#sentiment on each CBB report
 
 copom_sentiment_by_report<- 
   
@@ -316,9 +319,9 @@ copom_sentiment_by_report<-
   
   mutate(sentiment = positive - negative)
 
-ggplot(copom_sentiment_by_report, aes(factor(dates), sentiment/(negative+positive), fill = sentiment)) +
+ggplot(copom_sentiment_by_report, aes(factor(dates), sentiment/(negative+positive), fill = sentiment>0)) +
   
-  geom_col(show.legend = FALSE) + scale_fill_viridis_c(option = "C") +
+  geom_col(show.legend = FALSE) + scale_fill_manual(values = c("red","blue4"))+
   
   theme_ridges(font_family = "Roboto", font_size = 10) +
   
