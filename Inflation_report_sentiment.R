@@ -79,7 +79,27 @@ copom_links<- c("https://www.bcb.gov.br/content/publications/inflationreport/200
                 
                 "https://www.bcb.gov.br/content/publications/inflationreport/201906/ri201906I.pdf",
                 
-                "https://www.bcb.gov.br/content/publications/inflationreport/201909/ri201909i.pdf")
+                "https://www.bcb.gov.br/content/publications/inflationreport/201909/ri201909i.pdf",
+                
+                "https://www.bcb.gov.br/content/ri/inflationreport/201912/ri201912i.pdf",
+                
+                "https://www.bcb.gov.br/content/ri/inflationreport/202003/ri202003i.pdf",
+                
+                "https://www.bcb.gov.br/content/ri/inflationreport/202006/ri202006i.pdf",
+                
+                "https://www.bcb.gov.br/content/ri/inflationreport/202009/ri202009i.pdf",
+                
+                "https://www.bcb.gov.br/content/ri/inflationreport/202012/ri202012i.pdf",
+                
+                "https://www.bcb.gov.br/content/ri/inflationreport/202103/ri202103i.pdf",
+                
+                "https://www.bcb.gov.br/content/ri/inflationreport/202106/ri202106i.pdf",
+                
+                "https://www.bcb.gov.br/content/ri/inflationreport/202109/ri202109i.pdf",
+                
+                "https://www.bcb.gov.br/content/ri/inflationreport/202112/ri202112i.pdf"
+                
+                )
 
 
 # date stamps
@@ -87,7 +107,7 @@ copom_links<- c("https://www.bcb.gov.br/content/publications/inflationreport/200
 dates1<- as.Date(seq.Date(from = as.Date("2007/3/1"), to = as.Date("2011/6/1"), by = "quarter"))
 
 
-dates2<- as.Date(seq.Date(from = as.Date("2016/9/1"), to = as.Date("2019/9/1"), by = "quarter"))
+dates2<- as.Date(seq.Date(from = as.Date("2016/9/1"), to = as.Date("2021/12/1"), by = "quarter"))
 
 dates<- c(as.character(dates1),as.character(dates2))
 
@@ -145,7 +165,7 @@ ggplot(data = total_words, aes( x = dates, y = total)) +
   
   theme_ridges( font_family = "Roboto") +
   
-  labs(x = "Year", y = "Number of Words", title = "Number of Words BACEN Inflation Report") +
+  labs(x = "Quarter", y = "Number of Words", title = "Number of Words BACEN Inflation Report") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
   
   
@@ -319,21 +339,20 @@ copom_sentiment_by_report<-
   
   mutate(sentiment = positive - negative)
 
-ggplot(copom_sentiment_by_report, aes(factor(dates), sentiment/(negative+positive), fill = sentiment>0)) +
+g1<-ggplot(copom_sentiment_by_report, aes(factor(dates), sentiment/(negative+positive), fill = sentiment>0)) +
   
   geom_col(show.legend = FALSE) + scale_fill_manual(values = c("red","blue4"))+
   
   theme_ridges(font_family = "Roboto", font_size = 10) +
   
-  labs(x= "Reports", y = "Sentiment >0 good omens, <0 winter is comming", title  = "Sentiment CBB Inflation Reports")+
+  labs(x= "Reports", y = "Sentiment index", title  = "Sentiment CBB Inflation Reports")+
   
- theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+ theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) 
+  
+
+
   
   
-
-
-
-
 
 
 
